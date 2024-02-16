@@ -11,8 +11,8 @@ using ReactBlogDataAPI.Models;
 namespace ReactBlogDataAPI.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20240215141723_Initial")]
-    partial class Initial
+    [Migration("20240216125844_InitialBlogger")]
+    partial class InitialBlogger
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

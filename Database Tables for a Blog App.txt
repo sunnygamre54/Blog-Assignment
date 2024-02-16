@@ -1,0 +1,26 @@
+Database Tables for a Blog App:
+
+1. Users:
+
+user_id (INT, PRIMARY KEY)
+username (VARCHAR)
+email (VARCHAR, UNIQUE)
+password (VARCHAR)
+
+2. Posts:
+
+post_id (INT, PRIMARY KEY)
+user_id (INT, FOREIGN KEY REFERENCES Users(user_id))
+title (VARCHAR)
+content (TEXT)
+created_at (DATETIME)
+updated_at (DATETIME)
+published (BOOLEAN)
+
+3. Comments:
+
+comment_id (INT, PRIMARY KEY)
+post_id (INT, FOREIGN KEY REFERENCES Posts(post_id))
+user_id (INT, FOREIGN KEY REFERENCES Users(user_id))
+content (TEXT)
+created_at (DATETIME)
