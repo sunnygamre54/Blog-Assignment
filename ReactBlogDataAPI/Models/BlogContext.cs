@@ -10,5 +10,7 @@ namespace ReactBlogDataAPI.Models
         }
 
         public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Comments> Comments { get; set; }
     }
 }

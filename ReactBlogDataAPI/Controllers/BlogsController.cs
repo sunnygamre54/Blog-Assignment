@@ -26,7 +26,7 @@ namespace ReactBlogDataAPI.Controllers
             {
                 return NotFound();
             }
-            return await _blogContext.Blogs.OrderBy(x => x.ID).ToListAsync();
+            return await _blogContext.Blogs.OrderBy(x => x.BlogID).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -55,7 +55,7 @@ namespace ReactBlogDataAPI.Controllers
             _blogContext.Blogs.Add(data);
             await _blogContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBlogs), new { id = data.ID }, data);
+            return CreatedAtAction(nameof(GetBlogs), new { id = data.BlogID }, data);
         }
     }
 }

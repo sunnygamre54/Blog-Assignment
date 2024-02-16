@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactBlogDataAPI.Models;
 
@@ -11,9 +12,11 @@ using ReactBlogDataAPI.Models;
 namespace ReactBlogDataAPI.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20240216185648_blogger")]
+    partial class blogger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,8 +50,6 @@ namespace ReactBlogDataAPI.Migrations
 
                     b.HasKey("BlogID");
 
-                    b.HasIndex("UserID");
-
                     b.ToTable("Blogs");
                 });
 
@@ -74,10 +75,6 @@ namespace ReactBlogDataAPI.Migrations
 
                     b.HasKey("CommentID");
 
-                    b.HasIndex("BlogID");
-
-                    b.HasIndex("UserID");
-
                     b.ToTable("Comments");
                 });
 
@@ -101,30 +98,6 @@ namespace ReactBlogDataAPI.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ReactBlogDataAPI.Models.Blog", b =>
-                {
-                    b.HasOne("ReactBlogDataAPI.Models.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ReactBlogDataAPI.Models.Comments", b =>
-                {
-                    b.HasOne("ReactBlogDataAPI.Models.Blog", "Blogs")
-                        .WithMany()
-                        .HasForeignKey("BlogID");
-
-                    b.HasOne("ReactBlogDataAPI.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("Blogs");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

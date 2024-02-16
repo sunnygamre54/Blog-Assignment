@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ReactBlogDataAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4ccd31d3a2373578743a9954c2746ed5b196ba2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ecf7c370554ee303689f5a4308f4b2bc473ddf66")]
 [assembly: System.Reflection.AssemblyProductAttribute("ReactBlogDataAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ReactBlogDataAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

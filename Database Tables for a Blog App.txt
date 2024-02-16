@@ -15,7 +15,6 @@ title (VARCHAR)
 content (TEXT)
 created_at (DATETIME)
 updated_at (DATETIME)
-published (BOOLEAN)
 
 3. Comments:
 
