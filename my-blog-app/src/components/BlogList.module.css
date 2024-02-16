@@ -1,0 +1,11 @@
+.blogs {
+    list-style: none;
+    max-width: 68rem;
+    margin: 1rem auto;
+    padding: 1rem 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 50%);
+    justify-content: center;
+    height: 50rem;
+  }
