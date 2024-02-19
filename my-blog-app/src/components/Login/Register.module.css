@@ -1,0 +1,16 @@
+.registerCard {
+    margin: 100px 300px 400px 300px;
+}
+
+.registerCardBody {
+    margin-left: 140px ;
+}
+
+input {
+    width: 60% !important;
+}
+
+.required 
+{
+    color: red;
+}
