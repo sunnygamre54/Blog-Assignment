@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./NewPost.module.css";
 
 function NewPost({ cancelModal, onAddBlog }) {
   const [enteredContent, setEnteredContent] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
+  const [fetchedUserId, setFetchedUserId] = useState("");
 
   function changeContentHandler(event) {
     setEnteredContent(event.target.value);
@@ -12,12 +13,27 @@ function NewPost({ cancelModal, onAddBlog }) {
     setEnteredTitle(event.target.value);
   }
 
-  function submitHandler(event){
+  useEffect(() => {
+    async function fetchUserID() {
+      const username = sessionStorage.getItem("username");
+      const response = await fetch(
+        `http://localhost:5056/api/Users/${username}`
+      );
+      setFetchedUserId(await response.json());
+    }
+    fetchUserID();
+  }, []);
+
+  function submitHandler(event) {
     event.preventDefault();
     const postData = {
-        title : enteredTitle,
-        content : enteredContent
-    }
+      title: enteredTitle,
+      content: enteredContent,
+      userId: fetchedUserId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    console.log(postData);
     onAddBlog(postData);
     cancelModal();
   }

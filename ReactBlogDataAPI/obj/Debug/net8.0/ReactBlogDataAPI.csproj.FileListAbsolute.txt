@@ -279,3 +279,4 @@ C:\Sunny\React Assignment\Blog Assignment\ReactBlogDataAPI\obj\Debug\net8.0\refi
 C:\Sunny\React Assignment\Blog Assignment\ReactBlogDataAPI\obj\Debug\net8.0\ReactBlogDataAPI.pdb
 C:\Sunny\React Assignment\Blog Assignment\ReactBlogDataAPI\obj\Debug\net8.0\ReactBlogDataAPI.genruntimeconfig.cache
 C:\Sunny\React Assignment\Blog Assignment\ReactBlogDataAPI\obj\Debug\net8.0\ref\ReactBlogDataAPI.dll
+C:\Sunny\React Assignment\Blog Assignment\ReactBlogDataAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

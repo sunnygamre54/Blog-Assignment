@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactBlogDataAPI.Models;
@@ -9,6 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace ReactBlogDataAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BlogsController : ControllerBase
@@ -30,13 +32,13 @@ namespace ReactBlogDataAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Blog>> GetBlogs(int id)
+        public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs(int id)
         {
             if (_blogContext.Blogs == null)
             {
                 return NotFound();
             }
-            var blog = await _blogContext.Blogs.FindAsync(id);
+            var blog = await _blogContext.Blogs.Where(x => x.UserID == id).ToListAsync();
             if (blog == null)
             {
                 return NotFound();

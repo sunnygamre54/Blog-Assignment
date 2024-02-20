@@ -21,7 +21,7 @@ function Login() {
     sessionStorage.clear();
   }, []);
 
-  function onLogin(event) {
+  function onLoginUsingAPI(event) {
     console.log("hit");
     event.preventDefault();
     const postData = {
@@ -29,7 +29,7 @@ function Login() {
       password: password,
     };
 
-    fetch("http://localhost:5056/api/Users/ValidateUser", {
+    fetch("http://localhost:5056/api/Users/Authenticate", {
       method: "POST",
       body: JSON.stringify(postData),
       headers: {
@@ -37,22 +37,22 @@ function Login() {
       },
     })
       .then((res) => {
-        if (res.status == 200) {
-          navigate("/");
-          toast.success("Login Successfull");
-          sessionStorage.setItem("username",userName);
-        } else {
-          toast.error("Wrong UserName or Password or User Doesn't exist");
-        }
+        return res.json();
+      })
+      .then((resp) => {
+        toast.success("Login Successfull");
+        sessionStorage.setItem("username", userName);
+        sessionStorage.setItem("jwtToken", resp.jwtToken);
+        navigate("/");
       })
       .catch((err) => {
-        toast.error("Login Failed due to : "+err.message);
+        toast.error("Login Failed due to : " + err.message);
       });
   }
 
   return (
     <div className="p-3 m-0 border-0 bd-example m-0 border-0">
-      <form onSubmit={onLogin}>
+      <form onSubmit={onLoginUsingAPI}>
         <div className={"card text-center " + classes.registerCard}>
           <div className="card-header">Login</div>
           <div className={"card-body " + classes.registerCardBody}>
@@ -72,12 +72,11 @@ function Login() {
                   onChange={changeUserName}
                 />
               </div>
-            </div>            
+            </div>
             <div className="row mb-3">
               <label
                 htmlFor="inputPassword"
                 className="col-sm-2 col-form-label"
-                
               >
                 Password<span className={classes.required}> *</span>
               </label>
@@ -93,7 +92,11 @@ function Login() {
             </div>
           </div>
           <div className="card-footer text-body-secondary">
-            <button type="submit" className="btn btn-primary" style={{marginRight : "10px"}}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ marginRight: "10px" }}
+            >
               Login
             </button>
             <Link type="button" className="btn btn-success" to={"/register"}>
