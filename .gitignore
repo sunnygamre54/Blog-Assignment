@@ -3,4 +3,6 @@
 ################################################################################
 
 /ReactBlogDataAPI/.vs/ReactBlogDataAPI/FileContentIndex
-/ReactBlogDataAPI/obj/Debug/net8.0
+/ReactBlogDataAPI/obj
+/ReactBlogDataAPI/bin
+/ReactBlogDataAPI/.vs
