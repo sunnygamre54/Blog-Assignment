@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -8,8 +6,6 @@ using ReactBlogDataAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using ReactBlogDataAPI.Token;
 
 namespace ReactBlogDataAPI.Controllers
@@ -29,7 +25,7 @@ namespace ReactBlogDataAPI.Controllers
         }
 
         [HttpPost("ValidateUser")]
-        public async Task<ActionResult<HttpResponse>> ValidateUser(Users user)
+        public async Task<IActionResult> ValidateUser(Users user)
         {
             if (_dbContext.Blogs == null)
             {
@@ -40,11 +36,11 @@ namespace ReactBlogDataAPI.Controllers
             {
                 return BadRequest();
             }
-            return Ok();
+            return Ok("Valid User");
         }
 
         [HttpPost]
-        public async Task<ActionResult<HttpResponse>> AddUser(Users user)
+        public async Task<IActionResult> AddUser(Users user)
         {
             if (user == null)
             {
@@ -61,7 +57,7 @@ namespace ReactBlogDataAPI.Controllers
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok("User Added Successfully");
         }
 
         [HttpGet("{username}")]
