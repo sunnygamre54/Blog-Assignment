@@ -26,7 +26,7 @@ function NewPost({ cancelModal, onAddBlog }) {
 
   function submitHandler(event) {
     event.preventDefault();
-    const postData = {
+    const postData = {    
       title: enteredTitle,
       content: enteredContent,
       userId: fetchedUserId,

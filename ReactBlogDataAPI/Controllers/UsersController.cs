@@ -48,7 +48,6 @@ namespace ReactBlogDataAPI.Controllers
             }
 
             var userExists = await _dbContext.Users.Where(x => x.UserName == user.UserName && x.UserEmail == user.UserEmail).FirstOrDefaultAsync();
-
             if (userExists != null)
             {
                 return BadRequest();
@@ -145,8 +144,8 @@ namespace ReactBlogDataAPI.Controllers
             {
                 return Unauthorized();
             }
-            TokenResponse resuult = Authenticate(username, principal.Claims.ToArray());
-            return Ok(resuult);
+            TokenResponse result = Authenticate(username, principal.Claims.ToArray());
+            return Ok(result);
         }
     }
 }

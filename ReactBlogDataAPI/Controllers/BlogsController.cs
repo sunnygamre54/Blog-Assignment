@@ -47,7 +47,7 @@ namespace ReactBlogDataAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Blog>> AddBlogs(Blog data)
+        public async Task<IActionResult> AddBlogs(Blog data)
         {
             if(data == null)
             {
@@ -57,7 +57,7 @@ namespace ReactBlogDataAPI.Controllers
             _blogContext.Blogs.Add(data);
             await _blogContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBlogs), new { id = data.BlogID }, data);
+            return Ok();
         }
     }
 }

@@ -58,7 +58,7 @@ function BlogList({ modalStatus, onModalClose }) {
         Authorization: "bearer " + jwtToken,
       },
     }).then((res) => {
-      if (res.status == 201) {
+      if (res.statusText == "OK") {
         setBlogsData(blogData);
       }
     });
@@ -79,7 +79,7 @@ function BlogList({ modalStatus, onModalClose }) {
         <ul className={classes.blogs}>
           {blogs.map((blog) => (
             <Blogs
-              key={blog.id}
+              key={blog.content}
               blogTitle={blog.title}
               blogContent={blog.content}
             ></Blogs>
