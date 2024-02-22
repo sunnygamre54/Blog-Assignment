@@ -105,6 +105,7 @@ function BlogList({ modalStatus, onModalClose }) {
               key={blog.content}
               blogTitle={blog.title}
               blogContent={blog.content}
+              blogCreatedDate = {blog.createdAt}
               viewBlog={onViewBlog}
             ></Blogs>
           ))}

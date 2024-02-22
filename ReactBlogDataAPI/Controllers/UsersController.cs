@@ -100,7 +100,7 @@ namespace ReactBlogDataAPI.Controllers
                 Subject = new ClaimsIdentity(
                     new Claim[]
                     {
-                        //new Claim(ClaimTypes.Name, _user.UserID),
+                        new Claim(ClaimTypes.Name, _user.UserName),
                         //new Claim(ClaimTypes.Role, _user.Role)
                     }
                 ),

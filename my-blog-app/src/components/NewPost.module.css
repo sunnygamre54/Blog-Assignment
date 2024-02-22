@@ -1,7 +1,7 @@
 .form {
     background-color: #d55105;
     padding: 1rem;
-    width: 20rem;
+    min-width: 1000px;
   }
   
   .form label {
@@ -21,6 +21,10 @@
     border: none;
     background-color: #d4926c;
     color: #ffffff;
+  }
+
+  .form textarea {
+    min-height: 320px;
   }
   
   .actions {

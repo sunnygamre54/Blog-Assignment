@@ -1,6 +1,7 @@
 import classes from "./Blogs.module.css";
+import dayjs from "dayjs";
 
-function Blogs({ blogTitle, blogContent, viewBlog }) {
+function Blogs({ blogTitle, blogContent, viewBlog, blogCreatedDate }) {
   function onclickHandler(event) {
     viewBlog(blogTitle, blogContent);
   }
@@ -8,7 +9,7 @@ function Blogs({ blogTitle, blogContent, viewBlog }) {
     <li className={classes.blogs}>
       <div style={{ display: "flex", marginBottom: "10px" }}>
         <div style={{ minWidth: "50%" }}>
-          <p className={classes.blogTitle}>{blogTitle}</p>
+          <h1 className={classes.blogTitle}>Date : {blogCreatedDate.substring(0,10)}</h1>
         </div>
         <div style={{ minWidth: "50%" }}>
           <button
@@ -20,7 +21,9 @@ function Blogs({ blogTitle, blogContent, viewBlog }) {
           </button>
         </div>
       </div>
-      <p className={classes.blogContent}>{blogContent}</p>
+      <div>
+        <h1 className={classes.blogContent}>{blogTitle}</h1>
+      </div>
     </li>
   );
 }

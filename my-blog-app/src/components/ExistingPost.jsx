@@ -6,11 +6,11 @@ function ExistingPost(props) {
     <form className={classes.form}>
       <p>
         <label htmlFor="name">Blog Title</label>
-        <input type="text" id="name" required value={props.title}/>
+        <input disabled="true" type="text" id="name" required value={props.title}/>
       </p>
       <p>
         <label htmlFor="body">Content</label>
-        <textarea id="body" required rows={3} value={props.content} />
+        <textarea disabled="true" id="body" required rows={3} value={props.content} />
       </p>
     </form>
   );
