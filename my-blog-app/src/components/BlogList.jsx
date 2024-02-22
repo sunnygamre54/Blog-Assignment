@@ -3,10 +3,14 @@ import classes from "./BlogList.module.css";
 import NewPost from "./NewPost";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
+import ExistingPost from "./ExistingPost";
 
 function BlogList({ modalStatus, onModalClose }) {
   const [blogs, setBlogs] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [viewBlogModalStatus, setViewBlogModalStatus] = useState(false);
+  const [currentTitle, setCurrentTitle] = useState("");
+  const [currentContent, setCurrentContent] = useState("");
 
   useEffect(() => {
     async function fetchUserID() {
@@ -64,6 +68,12 @@ function BlogList({ modalStatus, onModalClose }) {
     });
   }
 
+  function onViewBlog(bTitle, bContent) {
+    setViewBlogModalStatus(true);
+    setCurrentTitle(bTitle);
+    setCurrentContent(bContent);
+  }
+
   return (
     <>
       {modalStatus && (
@@ -75,6 +85,19 @@ function BlogList({ modalStatus, onModalClose }) {
         </Modal>
       )}
 
+      {viewBlogModalStatus && (
+        <Modal
+          onClose={() => {
+            setViewBlogModalStatus(false);
+          }}
+        >
+          <ExistingPost
+            title={currentTitle}
+            content={currentContent}
+          ></ExistingPost>
+        </Modal>
+      )}
+
       {!isFetching && blogs.length > 0 && (
         <ul className={classes.blogs}>
           {blogs.map((blog) => (
@@ -82,6 +105,7 @@ function BlogList({ modalStatus, onModalClose }) {
               key={blog.content}
               blogTitle={blog.title}
               blogContent={blog.content}
+              viewBlog={onViewBlog}
             ></Blogs>
           ))}
         </ul>
