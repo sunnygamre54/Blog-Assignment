@@ -34,6 +34,8 @@ namespace ReactBlogDataAPI.Token
                         RefreshToken = RefreshToken,
                         IsActive = true
                     };
+                    context.TblRefreshToken.AddAsync(tblRefreshtoken);
+                    context.SaveChangesAsync();
                 }
 
                 return RefreshToken;

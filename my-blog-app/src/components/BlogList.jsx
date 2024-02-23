@@ -4,6 +4,7 @@ import NewPost from "./NewPost";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import ExistingPost from "./ExistingPost";
+import RefreshToken from "./RefreshToken";
 
 function BlogList({ modalStatus, onModalClose }) {
   const [blogs, setBlogs] = useState([]);
@@ -23,18 +24,32 @@ function BlogList({ modalStatus, onModalClose }) {
 
     async function fetchBlogs(userId) {
       let jwtToken = sessionStorage.getItem("jwtToken");
-      const response = await fetch(
-        `http://localhost:5056/api/Blogs/${userId}`,
-        {
-          headers: {
-            Authorization: "bearer " + jwtToken,
-          },
+      let refreshToken = sessionStorage.getItem("refreshToken");
+      try {
+        const response = await fetch(
+          `http://localhost:5056/api/Blogs/${userId}`,
+          {
+            headers: {
+              Authorization: "bearer " + jwtToken,
+            },
+          }
+        );
+
+        if (response.statusText == "Unauthorized") {
+          await RefreshToken(jwtToken, refreshToken).then((res) => {
+            sessionStorage.setItem("jwtToken", res.jwtToken);
+            sessionStorage.setItem("refreshToken", res.refreshToken);
+            fetchBlogs(userId);
+          });
+        } else {
+          const jsonresponse = await response.json();
+          jsonresponse.map((data) => {
+            setBlogsData(data);
+          });
         }
-      );
-      const jsonresponse = await response.json();
-      jsonresponse.map((data) => {
-        setBlogsData(data);
-      });
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     async function fetching() {
@@ -61,11 +76,21 @@ function BlogList({ modalStatus, onModalClose }) {
         "Content-Type": "application/json",
         Authorization: "bearer " + jwtToken,
       },
-    }).then((res) => {
-      if (res.statusText == "OK") {
-        setBlogsData(blogData);
-      }
-    });
+    })
+      .then((res) => {
+        if (res.statusText == "OK") {
+          setBlogsData(blogData);
+        } else if (response.statusText == "Unauthorized") {
+          RefreshToken(jwtToken, refreshToken).then((res) => {
+            sessionStorage.setItem("jwtToken", res.jwtToken);
+            sessionStorage.setItem("refreshToken", res.refreshToken);
+            addBlogHandler(blogData);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function onViewBlog(bTitle, bContent) {
@@ -105,7 +130,7 @@ function BlogList({ modalStatus, onModalClose }) {
               key={blog.content}
               blogTitle={blog.title}
               blogContent={blog.content}
-              blogCreatedDate = {blog.createdAt}
+              blogCreatedDate={blog.createdAt}
               viewBlog={onViewBlog}
             ></Blogs>
           ))}

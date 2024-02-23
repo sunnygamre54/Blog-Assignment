@@ -120,32 +120,43 @@ namespace ReactBlogDataAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Refresh(TokenResponse token)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token.JWTToken, new TokenValidationParameters
+            try
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_jwtSettings.securityKey)),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            }, out securityToken);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken securityToken;
+                var principal = tokenHandler.ValidateToken(token.JWTToken, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_jwtSettings.securityKey)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out securityToken);
 
-            var _token = securityToken as JwtSecurityToken;
+                var _token = securityToken as JwtSecurityToken;
 
-            if (_token != null && _token.Header.Alg.Equals(SecurityAlgorithms.HmacSha256))
+                if (_token != null && _token.Header.Alg.Equals(SecurityAlgorithms.HmacSha256))
+                {
+                    var username = principal.Identity.Name;
+                    var _reftable = _dbContext.TblRefreshToken.FirstOrDefault(u => u.UserName == username && u.RefreshToken == token.RefreshToken);
+                    if (_reftable == null)
+                    {
+                        return Unauthorized();
+                    }
+                    TokenResponse result = Authenticate(username, principal.Claims.ToArray());
+                    return Ok(result);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return Unauthorized();
             }
-            var username = principal.Identity.Name;
-            var _reftable = _dbContext.TblRefreshToken.FirstOrDefault(u => u.UserName == username && u.RefreshToken == token.RefreshToken);
-            if (_reftable == null)
-            {
-                return Unauthorized();
-            }
-            TokenResponse result = Authenticate(username, principal.Claims.ToArray());
-            return Ok(result);
         }
     }
 }

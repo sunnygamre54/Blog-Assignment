@@ -43,6 +43,7 @@ function Login() {
         toast.success("Login Successfull");
         sessionStorage.setItem("username", userName);
         sessionStorage.setItem("jwtToken", resp.jwtToken);
+        sessionStorage.setItem("refreshToken", resp.refreshToken);
         navigate("/");
       })
       .catch((err) => {
