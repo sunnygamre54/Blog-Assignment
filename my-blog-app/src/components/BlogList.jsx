@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import ExistingPost from "./ExistingPost";
 import RefreshToken from "./RefreshToken";
+import Comments from "./Comments";
 
 function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +14,8 @@ function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
   const [currentTitle, setCurrentTitle] = useState("");
   const [currentContent, setCurrentContent] = useState("");
   const [userId, setUserId] = useState(0);
+  const [viewCommentModalStatus, setViewCommentModalStatus] = useState(false);
+  const [currentBlogID, setCurrentBlogID] = useState(0);
 
   useEffect(() => {
     async function fetchUserID() {
@@ -57,19 +60,6 @@ function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
       setIsFetching(false);
     }
 
-    // async function fetchingMyBlogs() {
-    //   let data = [];
-    //   let userId = fetchUserID();
-    //   blogs.map((x) => {
-    //     if (x.userId == userId) {
-    //       data.push(x);
-    //     }
-    //   });
-    //   setBlogs("");
-    //   setBlogsData(data);
-    // }
-
-    // viewMyBlogStatus && fetchingMyBlogs;
     fetching();
   }, []);
 
@@ -110,6 +100,11 @@ function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
     setCurrentContent(bContent);
   }
 
+  function onViewComment(blogID) {
+    setViewCommentModalStatus(true);
+    setCurrentBlogID(blogID);
+  }
+
   return (
     <>
       {modalStatus && (
@@ -118,6 +113,22 @@ function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
             cancelModal={onModalClose}
             onAddBlog={addBlogHandler}
           ></NewPost>
+        </Modal>
+      )}
+
+      {viewCommentModalStatus && (
+        <Modal
+          onClose={() => {
+            setViewCommentModalStatus(false);
+          }}
+        >
+          <Comments
+            blogData={currentBlogID}
+            userid={userId}
+            closeModal={() => {
+              setViewCommentModalStatus(false);
+            }}
+          ></Comments>
         </Modal>
       )}
 
@@ -142,7 +153,9 @@ function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
               blogTitle={blog.title}
               blogContent={blog.content}
               blogCreatedDate={blog.createdAt}
+              blogid={blog.blogID}
               viewBlog={onViewBlog}
+              viewComment={onViewComment}
             ></Blogs>
           ))}
         </ul>
