@@ -6,12 +6,13 @@ import Modal from "./Modal";
 import ExistingPost from "./ExistingPost";
 import RefreshToken from "./RefreshToken";
 
-function BlogList({ modalStatus, onModalClose }) {
+function BlogList({ modalStatus, onModalClose, viewMyBlogStatus }) {
   const [blogs, setBlogs] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [viewBlogModalStatus, setViewBlogModalStatus] = useState(false);
   const [currentTitle, setCurrentTitle] = useState("");
   const [currentContent, setCurrentContent] = useState("");
+  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
     async function fetchUserID() {
@@ -19,21 +20,18 @@ function BlogList({ modalStatus, onModalClose }) {
       const response = await fetch(
         `http://localhost:5056/api/Users/${username}`
       );
-      return await response.json();
+      setUserId(await response.json());
     }
 
     async function fetchBlogs(userId) {
       let jwtToken = sessionStorage.getItem("jwtToken");
       let refreshToken = sessionStorage.getItem("refreshToken");
       try {
-        const response = await fetch(
-          `http://localhost:5056/api/Blogs/${userId}`,
-          {
-            headers: {
-              Authorization: "bearer " + jwtToken,
-            },
-          }
-        );
+        const response = await fetch(`http://localhost:5056/api/Blogs`, {
+          headers: {
+            Authorization: "bearer " + jwtToken,
+          },
+        });
 
         if (response.statusText == "Unauthorized") {
           await RefreshToken(jwtToken, refreshToken).then((res) => {
@@ -54,11 +52,24 @@ function BlogList({ modalStatus, onModalClose }) {
 
     async function fetching() {
       setIsFetching(true);
-      let userId = await fetchUserID();
+      await fetchUserID();
       fetchBlogs(userId);
       setIsFetching(false);
     }
 
+    // async function fetchingMyBlogs() {
+    //   let data = [];
+    //   let userId = fetchUserID();
+    //   blogs.map((x) => {
+    //     if (x.userId == userId) {
+    //       data.push(x);
+    //     }
+    //   });
+    //   setBlogs("");
+    //   setBlogsData(data);
+    // }
+
+    // viewMyBlogStatus && fetchingMyBlogs;
     fetching();
   }, []);
 
@@ -123,7 +134,7 @@ function BlogList({ modalStatus, onModalClose }) {
         </Modal>
       )}
 
-      {!isFetching && blogs.length > 0 && (
+      {!viewMyBlogStatus && !isFetching && blogs.length > 0 && (
         <ul className={classes.blogs}>
           {blogs.map((blog) => (
             <Blogs
@@ -134,6 +145,22 @@ function BlogList({ modalStatus, onModalClose }) {
               viewBlog={onViewBlog}
             ></Blogs>
           ))}
+        </ul>
+      )}
+
+      {viewMyBlogStatus && !isFetching && blogs.length > 0 && (
+        <ul className={classes.blogs}>
+          {blogs
+            .filter((blog) => blog.userID == userId)
+            .map((blog) => (
+              <Blogs
+                key={blog.content}
+                blogTitle={blog.title}
+                blogContent={blog.content}
+                blogCreatedDate={blog.createdAt}
+                viewBlog={onViewBlog}
+              ></Blogs>
+            ))}
         </ul>
       )}
 

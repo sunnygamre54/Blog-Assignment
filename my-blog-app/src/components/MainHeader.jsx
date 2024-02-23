@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import classes from "./MainHeader.module.css";
 
-function MainHeader({ onCreatePost }) {
+function MainHeader({ onCreatePost, onViewAllBlogs, onViewMyBlogs }) {
   const username = sessionStorage.getItem("username");
 
   return (
@@ -16,12 +16,40 @@ function MainHeader({ onCreatePost }) {
       </h1>
       <div style={{ display: "flex" }}>
         <p>
-          <button type="button" className="btn btn-info" style={{ marginTop: "5px",height : "48px" }}>
+          <button
+            type="button"
+            className="btn btn-info"
+            style={{ marginTop: "5px", height: "48px" }}
+          >
             Hi, {username}
           </button>
         </p>
-        <p style={{ marginLeft: "20px" }}>
-          <button className={classes.button} onClick={onCreatePost}>
+        <p>
+          <button
+            type="button"
+            className="btn btn-success"
+            style={{ marginTop: "5px", height: "48px", marginLeft: "20px" }}
+            onClick={onViewAllBlogs}
+          >
+            View All blogs
+          </button>
+        </p>
+        <p>
+          <button
+            type="button"
+            className="btn btn-warning"
+            style={{ marginTop: "5px", height: "48px", marginLeft: "20px" }}
+            onClick={onViewMyBlogs}
+          >
+            View my blogs
+          </button>
+        </p>
+        <p>
+          <button
+            className="btn btn-light"
+            onClick={onCreatePost}
+            style={{ marginTop: "5px", height: "48px", marginLeft: "20px" }}
+          >
             <MdOutlineAddCircleOutline size={20} />
             New Blog
           </button>
